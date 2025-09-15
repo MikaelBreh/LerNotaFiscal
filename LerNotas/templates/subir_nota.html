@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Upload Nota Fiscal</title>
 </head>
 <body>
+
+<h2>Suba aqui sua nota fiscal</h2>
+<p>Clique no botão de upload e selecione um arquivo XML</p>
+
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="xml_file" accept=".xml" required>
+    <button type="submit">Enviar</button>
+</form>
 
 </body>
 </html>
