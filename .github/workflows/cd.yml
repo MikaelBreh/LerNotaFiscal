@@ -1,0 +1,23 @@
+name: Django CD
+
+# Este workflow funciona quando há um push para a branch 'main'.
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 1. Clonando o repositório
+      uses: actions/checkout@v3
+
+    - name: 2. Simulação de Deploy
+      run: |
+        echo "1 Iniciando o processo de deploy..."
+        echo "2 Testes Passaram"
+        echo "3 Fazendo deploy para o ambiente de produção..."
+        sleep 15 # Simula um tempo de deploy
+        echo "4 Deploy finalizado com sucesso!"

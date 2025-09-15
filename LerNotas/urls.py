@@ -1,8 +1,7 @@
 from django.urls import path
-from .views import SubirNota, upload_nota_fiscal
+from .views import SubirNota
 
 urlpatterns = [
-    path('', SubirNota, name='subir_nota')
-    path('upload/', upload_nota_fiscal, name='upload_nota_fiscal'),
+    path('', SubirNota, name='subir_nota'),
 
 ]
