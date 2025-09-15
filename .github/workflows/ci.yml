@@ -1,0 +1,37 @@
+name: Django CI
+
+# Este workflow roda em duas condições:
+# 1. Quando há um push para a branch 'main'
+# 2. Quando uma Pull Request é aberta para a branch 'main'
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.9, '3.10'] # Teste em duas versoes
+
+    steps:
+    - name: 1. Clonando o repositório
+      uses: actions/checkout@v3 # Ação oficial para checkout do código
+
+    - name: 2. Configurando Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: 3. Instalando as dependências
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: 4. Rodando os testes do Django
+      run: |
+        python manage.py test
