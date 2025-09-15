@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dados da Nota Fiscal</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+        .card { border: 1px solid #ccc; border-radius: 8px; padding: 20px; display: inline-block; }
+        a { margin-top: 20px; display: block; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>✔️ Dados Extraídos com Sucesso!</h2>
+    <p><strong>Cliente (Destino):</strong> {{ cliente }}</p>
+    <p><strong>Número da Nota:</strong> {{ numero_nota }}</p>
+</div>
+
+<a href="{% url 'subir_nota' %}">Enviar outra nota</a>
+
+</body>
+</html>
