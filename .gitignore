@@ -1,0 +1,21 @@
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+*.sqlite3
+db.sqlite3
+
+venv/
+env/
+.venv/
+.env/
+
+.idea/
+
+
+/media/
+/static_root/ # ou o nome que você definiu em STATIC_ROOT
+
+*.log
