@@ -1,9 +1,5 @@
 name: Django CI
 
-# Este workflow roda em duas condições:
-# 1. Quando há um push para a branch 'main'
-# 2. Quando uma Pull Request é aberta para a branch 'main'
-
 on:
   push:
     branches: [ "main" ]
@@ -20,10 +16,10 @@ jobs:
 
     steps:
     - name: 1. Clonando o repositório
-      uses: actions/checkout@v3 # Ação oficial para checkout do código
+      uses: actions/checkout@v4
 
     - name: 2. Configurando Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -35,24 +31,22 @@ jobs:
     - name: 4. Rodando os testes do Django
       run: |
         python manage.py test
-        
-  notify-discord:
-    name: Notify Discord
-    runs-on: ubuntu-latest
-    steps:
-      # Não precisamos do checkout para esta action específica, mas é bom manter o hábito
-      - name: Checkout repository
-        uses: actions/checkout@v4
 
-      # Usando a nova action, mais confiável
-      - name: Send Discord notification
-        uses: tsg-adapter/discord-webhook-notify@v2.2.0
+
+  notify-discord:
+    needs: build
+    runs-on: ubuntu-latest
+    if: success()
+
+    steps:
+      - name: Send success notification to Discord
+        uses: appleboy/discord-action@master
         with:
-          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          title: "🚀 Atualização no Repositório!"
-          description: |
-            **Evento:** `${{ github.event_name }}`
+          webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
+          webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+          message: |
+            ✅ Pipeline concluído com sucesso!
+            Os testes para o projeto **${{ github.repository }}** passaram.
             **Iniciado por:** `${{ github.actor }}`
-            [Ver alterações](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
-          color: "0394fc" # Cor hexadecimal (azul)
-          username: "GitHub Actions"
+            **Commit:** `${{ github.event.head_commit.message }}`
+            [Ver detalhes da execução](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
