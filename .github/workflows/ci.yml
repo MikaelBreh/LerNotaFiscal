@@ -36,11 +36,23 @@ jobs:
       run: |
         python manage.py test
         
-  discord:
+notify-discord:
+    name: Notify Discord
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Run Discord Webhook
-      uses: johnnyhuy/action-discord-git-webhook@main
-      with:
-        webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      # Não precisamos do checkout para esta action específica, mas é bom manter o hábito
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Usando a nova action, mais confiável
+      - name: Send Discord notification
+        uses: tsg-adapter/discord-webhook-notify@v2.2.0
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: "🚀 Atualização no Repositório!"
+          description: |
+            **Evento:** `${{ github.event_name }}`
+            **Iniciado por:** `${{ github.actor }}`
+            [Ver alterações](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+          color: "0394fc" # Cor hexadecimal (azul)
+          username: "GitHub Actions"
